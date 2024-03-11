@@ -43,32 +43,17 @@ function handleSubmission(event) {
 // Function to render tasks in the table
 function render() {
     // TODO: Use array methods to create a new table row of data for each item in the array
-    taskTable.innerHTML = ''; // Clear the table
-
-    tasks.forEach(function (task, index) {
-        const row = taskTable.insertRow();
-
-        const cellIndex = row.insertCell(0);
-        cellIndex.textContent = index + 1;
-
-        const cellName = row.insertCell(1);
-        cellName.textContent = task.name;
-
-        const cellDescription = row.insertCell(2);
-        cellDescription.textContent = task.description;
-
-        const cellDeadline = row.insertCell(3);
-        cellDeadline.textContent = task.deadline;
-
-        const cellActions = row.insertCell(4);
-        const removeButton = document.createElement('button');
-        removeButton.textContent = 'Remove';
-        removeButton.addEventListener('click', function () {
-            removeTask(index);
-        });
-        cellActions.appendChild(removeButton);
-    });
+    taskTable.innerHTML = tasks.map(task => `
+    <tr>
+        <td>${task.name}</td>
+        <td>${task.description}</td>
+        <td>${task.deadline}</td>
+        <td><button onclick="markTaskComplete(this)">Complete</button></td>
+        <td><button onclick="removeTask(this)">Remove</button></td>
+    </tr>
+`).join('');
 }
+
 
 // Function to initialize the table
 function init() {
@@ -76,6 +61,9 @@ function init() {
     tasks = []; // Reset the tasks array
     render(); // Call the render function
 }
+
+taskForm.addEventListener('submit', handleSubmission);
+
 
 
 
