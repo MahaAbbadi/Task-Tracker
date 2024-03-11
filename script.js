@@ -42,18 +42,42 @@ function handleSubmission(event) {
 
 // Function to render tasks in the table
 function render() {
-    // TODO: Use array methods to create a new table row of data for each item in the array
-    taskTable.innerHTML = tasks.map(task => `
-    <tr>
-        <td>${task.name}</td>
-        <td>${task.description}</td>
-        <td>${task.deadline}</td>
-        <td><button onclick="markTaskComplete(this)">Complete</button></td>
-        <td><button onclick="removeTask(this)">Remove</button></td>
-    </tr>
-`).join('');
+    // Use array methods to create a new table row of data for each item in the array
+    taskTable.innerHTML = tasks.map((task, index) => `
+        <tr>
+            <td>${index + 1}</td>
+            <td>${task.name}</td>
+            <td>${task.description}</td>
+            <td>${task.deadline}</td>
+            <td><button onclick="markTaskComplete(${index})">Complete</button></td>
+            <td><button onclick="removeTask(${index})">Remove</button></td>
+        </tr>
+    `).join('');
 }
 
+// Function to mark a task as complete
+function markTaskComplete(index) {
+    removeTask(index);
+
+    triggerConfetti();
+    
+}
+
+// Function to remove a task
+function removeTask(index) {
+    tasks.splice(index, 1);
+
+    render();
+}
+
+function triggerConfetti() {
+    // Use the canvas-confetti library to create a confetti effect
+    confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+    });
+}
 
 // Function to initialize the table
 function init() {
@@ -64,6 +88,6 @@ function init() {
 
 taskForm.addEventListener('submit', handleSubmission);
 
-
+init();
 
 
